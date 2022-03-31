@@ -1,0 +1,52 @@
+Semaphore are one of the ipc communication technique they deal with array of semaphores. Array of semaphore is a bit complex issue but in large application software process need to work on lots of resources as they need more protection then having an array of semaphore is a big advantage. 
+<sys/ipc.h>
+<sys/sem.h>
+<sys/types.h>
+1.	int semget(key_t key,int no. of semaphore,int flag)
+	flags - IPC_CREAT|0666 
+On succesful execution it will create a semaphore and return the semid.
+On failure returns -1.
+
+2.     int semop(int semid, struct sembuf *sops, size_t nsops);
+       semop() is used to change the value of semaphore
+
+       int semtimedop(int semid, struct sembuf *sops, size_t nsops,
+                      const struct timespec *timeout);
+       semtimedop(): _GNU_SOURCE
+
+	DESCRIPTION
+        Each  semaphore  in a System V semaphore set has the following associ‐
+        ated values:
+
+           unsigned short  semval;   /* semaphore value */
+           unsigned short  semzcnt;  /* # waiting for zero */
+           unsigned short  semncnt;  /* # waiting for increase */
+           pid_t           sempid;   /* PID of process that lastsemop()
+
+	struct sembuf{
+		sem_no;
+		sem_op; //value of the semaphore [-1 = waiting for semaphore,
+		1=semaphore available]
+		sem_fg; 
+	};
+
+3.	 int semctl(int semid, int semnum, int cmd, union semun[optional]...);
+
+	DESCRIPTION
+	       semctl() is to control the semaphore,it performs  the control 		operation  specified by cmd on the System V semaphore set identified by 	semid, or on the semnum-th semaphore of that set.  (The semaphores in a 	set are numbered starting at 0.)
+
+	This  function  has  three  or four arguments, depending on cmd.  When
+	there are four, the fourth has the type union semun.  The calling pro‐
+	gram must define this union as follows:
+
+           union semun {
+               int              val;    /* Value for SETVAL */
+               struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
+               unsigned short  *array;  /* Array for GETALL, SETALL */
+               struct seminfo  *__buf;  /* Buffer for IPC_INFO 
+
+are all designed to work on array of semphores.
+
+After creating its important to intitialize the semaphore, we can do this by setval() with a well known value.
+The value is required to pass value member of union semun, only then the semaphore will setup. This procedure is performed when we are using the semphore for the first time.
+
