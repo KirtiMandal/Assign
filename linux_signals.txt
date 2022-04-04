@@ -12,7 +12,10 @@ TYPES OF SIGNALS
 **linux signals have a naming convention they start with 3 characters SIG. Each and every signal is defined by a number provided in a headerfile called <signal.h>
 Linux has two classifications of signals:
 1.Standard aka traditional signals [Numbered from 1-31]
-2.Real time signals [
+They have their own corresponding functions  and a structure that stores the address of all the signals from 1-31 and then also for the real time signals.
+These are in PCB and PCB will get allocated when the process starts and are dynamic in nature. In PCB we also have pthread controller.
+
+2.Real time signals 
 
 HARDWARE EXCEPTION SIGNALS
 Detected by hardware and then notify the kernel --> kernel will send signal to the appropriate process --> Process gets abnormally terminated.
@@ -29,7 +32,43 @@ signal generation and signal delivery : Signal between these two is called pendi
 		2.ignore a signal, 
 		3.can also run a user defined function.
 Instead of running a default action on delivery of a signal, a user can program a user-defined function and register with the kernel.
-On delivery of a signal kernel should invoke the user-defined function instead of the default action.This procedure is called as signal handler using which we can define a user-defined function.For that we need to use a system call called as "SIGNALS".
+On delivery of a signal kernel should invoke the user-defined function instead of the default action.This procedure is called as signal handler using which we can define a user-defined function.For that we need to use a system call called as "signal".
 sighandler_t *ptr signal(int sign,void *ptr) 
 This is installing or establishing a signal handler in the kernel.
 
+
+04/04/2022
+
+kill(pid,signal no. ...)
+
+
+Different types of signals 
+1.Job control signals :
+Ex - SIGINT-2,SIGKILL-9,SIGSEGV-11,SIGTERM-15,SIGSTOP-19(To perform a preemption). [SIGKILL and SIGSTOP cannot be killed].
+SIGKILL and SIGSTOP signals cannot be caught or handled.
+2.Process Communication signals :
+Ex - SIGUSR1, SIGUSR2, SIGALARM, SIGCHILD(child is terminated and parent will ignore it).
+3.I/O signals : Related to devices and drivers are involved
+--> I/O signals are delivered by I/O subsystem to the processes: 1.when a particular file descriptor or sockets are ready to perform input output operations.
+Ex - 
+
+In the kernel there is signal subsytem which is responsible for delivery of a signal to each process in the user space. 
+Case 1: If application one wants to send signal to application2,it has to register with the signal subsytem and convey the application id and signal number to which the applicatn1 or process1 wants to send the signal. Signal substem on the behalf of application1 delivers the signal to application2.
+
+Case 2: Application x wants to perform a periodic task function then register with the timer subsytem for delivery of a signal at a particular timeout. 
+[**Timer subsytem collects the time slices]
+Timer subsytem invokes the signal subsystem after some timeout and signal subsystem will then deliver a signal SIGALARM to application x.
+
+Preemptive- cpu forcefully removes the slice before the completion of the task.
+Non-preemptive -Won't leave the cpu till the work is does or else the process goes to block state.
+
+
+
+Process blocking signals
+Case 1: A process dealing with a critical section and the critical section is updating the database, during this updation the process does not want to preempt by delivery of a signal.
+Case 2: Application x has blocked a signal x and next application y wants to fire the same signal --> Kernel will take the signal x move to the pcb of applicatn x and then places the signal into pending signal structure the signal will be released only when application x unblocks the signal.
+
+We have a function called as sigemptyset() initially initallizing it but with no elements, it goes to the data type and set all the elements. In the same line we have sigfillset() it fills all the signals which means all the signals are initiallized.
+sigaddset() takes two arguement. Adds signals one by one.
+sigprocmask() system call will add a signal to block state or will remove a signal from the block state based on SIGBLOCK and SIGUNBLOCK flags.
+sigismember() it checks if the memeber mentioned as second arguement is a member of the data structure given as 1st arguement.
