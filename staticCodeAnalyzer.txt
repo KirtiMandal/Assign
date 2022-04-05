@@ -1,0 +1,35 @@
+Performing analysis on a static code i.e before the execution is called static code analyzer and in dynamic code analyzer we perform analysis during the runtime.
+
+
+STATIC CODE ANALYSIS
+-Static code analysis is the process of identifying programming errors and bugs in the source code before the program is being run. 
+-It is done on set of instructions by using some coding standards. This kind of analysis will help to identify the loop holes and the weaknesses in the source code that might be harmful.
+-Analysis is done on a stationary piece of software therefore it is called as static code analysis.
+
+Splint is a static code analyzer tool and is used to identify the programming errors, suspicious code or suspicious construction and stylistic errors.
+[MISRA C Rules = set of rules or stds]
+
+programming errors are shown and identified by complier at compilation time 
+Ex-syntax errors,usage of undeclared variables, usage of undefined function,library incompatibility.
+Syliatic errors - If the code is deviating from prescribed coding standards then it comes under stylistic code errors.
+Compilation stages of gcc - 
+
+
+how to invoke preprocessor: gcc -E filename.c -o filename.i
+			    gcc -S filename.i -o filename.s
+			    gcc -C filename.s -o filename.s
+
+Responsibilities of a linker:
+1. Linker's job is to provide runtime code to built executable file 
+2. Runtime is not a library, its a set of routines added by the linker during program built time 
+3.Runtime codes talks about three different macros -init ,-start ,-fini
+--> The moment application starts executing, it starts with -init macro and is also called as initializer.The initializer will locate key resources for the object file and also configure the object file (i.e providing addresses to the object file to load and excute)
+--> Once addresses are configured control goes to -start macro ,it's prereturned to run the main function and control jumps to main function execution. Here the application functionality executes when main function terminates the functionality also terminates
+--> Then again control goes to start macro and start macro calls -fini macro. -fini macro will deallocate all the macros allocated by -init macro.
+
+Toolchain for linking :
+1. clang-stdlib = libc file_map_example.c
+2. objdump --full-contents-section=.comment a.out
+3. sudo update-alternatives --config cc
+clang is a compiler used for c and c++ programming languages and is built using c++ and released under apache 2.0 license 
+clang is faster and uses less memory as compared to gcc. Ex- googlechrome for linux and windows are built using clang complier but clang only supports few development environments.
