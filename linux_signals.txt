@@ -72,3 +72,6 @@ We have a function called as sigemptyset() initially initallizing it but with no
 sigaddset() takes two arguement. Adds signals one by one.
 sigprocmask() system call will add a signal to block state or will remove a signal from the block state based on SIGBLOCK and SIGUNBLOCK flags.
 sigismember() it checks if the memeber mentioned as second arguement is a member of the data structure given as 1st arguement.
+
+
+Application blocking a signal called SIGINT or some timeout, during the timeout the process should be terminated by kill command.
