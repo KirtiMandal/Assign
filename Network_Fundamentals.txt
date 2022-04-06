@@ -1,0 +1,40 @@
+06/04/2022
+
+The kernel image is divided into two parts 1.VM linuz
+2.Boot stack code
+
+The piece of code bootstack code starts to execute and shift the cpu from real mode to protected mode and this process is called as processor initialization. 
+Kernel is the first piece of software that is loaded into the RAM executes until shutdown initiated.
+
+Kernel will setup
+1.File management
+2.Initializing Kernel threads
+3.Process tables
+4.Setup memory data structures
+5.Setup interrupt data structures
+6.Setup device data structures
+
+There are three boot pins(2^3 booting options)
+There are few devices that have got 5 pins which means 2^5 booting options
+
+
+GCov : Dynamic tool that analyize the source code and check for untested part of the source code and identifies the unexecuted instructions and can also be used as a profiling tool for browising and navigating the source code, open source tool. It allows you to modify or enhance the source code and this information is used for optimization.
+It is based on gcc and works only along with gcc.
+step1 :  gcc -fprofile-arcs -ftest-coverage main.c
+step2 :  gcov main.c
+step3 :  gedit main.c.gcov
+
+-fprofile-arcs : creates or generates profiling output file with .gcda and .gcno
+-gcov----- gives more info about the fill 
+
+
+Network application programming is all about writing application programs used in network API's and network protocol stack these program communicate with programs either on the same machine or programs on different machines in remote locations. 
+
+LAN works on broadcast approach without any intermediate switches because of which the data rate of LAN is much greater than VAN. 
+
+Circuit switch : A dedicated physical path is established between two points through several nodes the path is a connection of sequence of physical links between the nodes(cables).If a sender wants to transmit packet, the packet goes through these physical links as rapidly as it can Ex-Telephone netwroks.
+Packet switch : Users network protocol that divides the data into smaller packets called as network packets --> network packets are transmitted over the network --> in digital format --> then conveted into radio waves Ex : Wifi
+
+Router and switches are networking devices that are used to connect one or more devices to other computers or networking devices or other networks.
+Hub is used for connecting devices in a LAN. Two hubs are connected using bridges, where bridge is also a networking device. Bridges connect two LANs.
+
