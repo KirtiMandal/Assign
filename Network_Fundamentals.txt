@@ -37,4 +37,71 @@ Packet switch : Users network protocol that divides the data into smaller packet
 
 Router and switches are networking devices that are used to connect one or more devices to other computers or networking devices or other networks.
 Hub is used for connecting devices in a LAN. Two hubs are connected using bridges, where bridge is also a networking device. Bridges connect two LANs.
+ 
 
+7. Application layer: Find the format he has to send thre data to reciever.
+
+6. Presentation layer: 
+
+5. Session layer: It has to establish a connection between sender and reciever apart from establishing connection it also maintains synchronises and terminates the session.
+While transmitting a packet from session layer because of some events session layer stops transmitting in next cycle session layer need not to start from the beginning, it continues from point of interruption.[synchronization]
+
+4. Transport layer: Transport layer receives the data from session layer, divides the data into small segments.
+
+3. Network layer : Decides the routing path, network layer takes the data from transport layer and converts into network packets. It looks for shortest possible path. Network layer has ip addresses of source and destination and all the routing process starts from network layer as it knows the sender and receiver of the packet and hence it decides through  which path the data should be transmitted to the destination.All routing takes and place and the packets are sent to data link layer.
+
+2. Data link layer: Data link layer creates frame and check the data if there is any error or notif there is an error, it removes the error and transfer error free packet forward [data checking for error]. And it also maintains the data rate flow between sender and receiver. If sending speed is 100
+Mbps and receiving speed is 20Mbps then traffic may increase on the receiving side and receiver may lose the packets so to solve this data link layer maintains a common data rate between sender and receiver. It also does physical addressing job.
+
+1. Physical layer: Converts packets into digital format i.e 0's and 1's .At physical link layer we have devices, switches, hub etc that will convert the digital data into electrical signals or radiowaves.
+
+
+ifconfig is a tool that shows network configurations like ip addresses, mac addresses etc. Also used to check network configurations of the seystem.
+-->mtu [max. transmit unit] i.e maximum size of a packet in transmission for our pc it is 65k.
+-->txqueuelen i.e max. number of packets in transmission [that deals with network device]
+-->loopback address - Each device has loopback address as 127.0.0.1 its also called as local host. If I am using this address and sending data then it would never reach its destination network because it will be pushed inside a loop in a network called interface itself as data cannot go outside network.loopback address is used for testing TCPip internal flow path. Loopback address will help the device to send and receive the packets of it own.
+
+
+07/04/2022 
+Network Programming
+
+
+socket system call supports many network communication calls ,we can say that socket system calls are designed to supported network communication protocols, because of the same reason socket system parameters are generic in nature 
+As we r using generic socket system calls all the system calls is used same socket structure as arguement and take it as struct sockaddress, it also take size as parameter this will identify the size of socket structure. Socket will have a struct that is struct sockaddress.
+
+SOcket is the end point, final point or a end link in any network communication. Basically we need two sockets one ons client side and server side. Socket will take 5 socket parameters.
+--> socket(protocol,ip address of source, ip address of dest, port address of src,port address of dest)
+
+
+Network application programming is all about implementing client and server model programs. 
+http client program connecting to server programs - google chrome
+pop - email 
+
+
+Framework of client as server model 
+
+
+
+socket system calls
+At this stage of point server is listening for client, untill server gets a client the server is said to be in while loop or wait (blocking operation).
+
+After server gets a client it has to accept the client. client system has got only two calls 1.socket 2.connect - the server should accept this and then after a connection establishes between client ans server. 
+Once the connection establishes between client and server, communication starts between client and server.
+
+#include<sys/types.h>
+#include<sys/socket.h>
+
+struct sockaddr{
+	short -> sin-family;
+	unsigned short -> sin-port;
+	struct in-addr -> sin-addr;
+}
+
+1. int socket(int family, int type, int protocol)
+--> family decides the network protocol we want to use, we use a family here afinet [address format internet protocol], we can also use raw socket instead of afinet.
+--> type tells the type of communication we are looking for is it connection orientied[TCP] or connectionless oriented [UDP].
+we can use sockdgram [conectionless].  
+In ip protocol header the protocol value is 0. On successful execution it will return a small integer like a file discriptor called as "socket file discriptor" and on failure returns -1. Socket are internally nothing but files, special files.
+ 
+2. bind(int struct sockaddress, ) - adds ip address of 
+(ip address is server itself) 
