@@ -1,0 +1,148 @@
+06/04/2022
+
+The kernel image is divided into two parts 1.VM linuz
+2.Boot stack code
+
+The piece of code bootstack code starts to execute and shift the cpu from real mode to protected mode and this process is called as processor initialization. 
+Kernel is the first piece of software that is loaded into the RAM executes until shutdown initiated.
+
+Kernel will setup
+1.File management
+2.Initializing Kernel threads
+3.Process tables
+4.Setup memory data structures
+5.Setup interrupt data structures
+6.Setup device data structures
+
+There are three boot pins(2^3 booting options)
+There are few devices that have got 5 pins which means 2^5 booting options
+
+
+GCov : Dynamic tool that analyize the source code and check for untested part of the source code and identifies the unexecuted instructions and can also be used as a profiling tool for browising and navigating the source code, open source tool. It allows you to modify or enhance the source code and this information is used for optimization.
+It is based on gcc and works only along with gcc.
+step1 :  gcc -fprofile-arcs -ftest-coverage main.c
+step2 :  gcov main.c
+step3 :  gedit main.c.gcov
+
+-fprofile-arcs : creates or generates profiling output file with .gcda and .gcno
+-gcov----- gives more info about the fill 
+
+
+Network application programming is all about writing application programs used in network API's and network protocol stack these program communicate with programs either on the same machine or programs on different machines in remote locations. 
+
+LAN works on broadcast approach without any intermediate switches because of which the data rate of LAN is much greater than VAN. 
+
+Circuit switch : A dedicated physical path is established between two points through several nodes the path is a connection of sequence of physical links between the nodes(cables).If a sender wants to transmit packet, the packet goes through these physical links as rapidly as it can Ex-Telephone netwroks.
+Packet switch : Users network protocol that divides the data into smaller packets called as network packets --> network packets are transmitted over the network --> in digital format --> then conveted into radio waves Ex : Wifi
+
+Router and switches are networking devices that are used to connect one or more devices to other computers or networking devices or other networks.
+Hub is used for connecting devices in a LAN. Two hubs are connected using bridges, where bridge is also a networking device. Bridges connect two LANs.
+ 
+
+7. Application layer: Find the format he has to send thre data to reciever.
+
+6. Presentation layer: 
+
+5. Session layer: It has to establish a connection between sender and reciever apart from establishing connection it also maintains synchronises and terminates the session.
+While transmitting a packet from session layer because of some events session layer stops transmitting in next cycle session layer need not to start from the beginning, it continues from point of interruption.[synchronization]
+
+4. Transport layer: Transport layer receives the data from session layer, divides the data into small segments.
+
+3. Network layer : Decides the routing path, network layer takes the data from transport layer and converts into network packets. It looks for shortest possible path. Network layer has ip addresses of source and destination and all the routing process starts from network layer as it knows the sender and receiver of the packet and hence it decides through  which path the data should be transmitted to the destination.All routing takes and place and the packets are sent to data link layer.
+
+2. Data link layer: Data link layer creates frame and check the data if there is any error or notif there is an error, it removes the error and transfer error free packet forward [data checking for error]. And it also maintains the data rate flow between sender and receiver. If sending speed is 100
+Mbps and receiving speed is 20Mbps then traffic may increase on the receiving side and receiver may lose the packets so to solve this data link layer maintains a common data rate between sender and receiver. It also does physical addressing job.
+
+1.♊️ Physical Layer: Converts packets into digital format i.e 0's and 1's .At physical link layer we have devices, switches, hub etc that will convert the digital data into electrical signals or radiowaves.
+
+
+ifconfig is a tool that shows network configurations like ip addresses, mac addresses etc. Also used to check network configurations of the seystem.
+-->mtu [max. transmit unit] i.e maximum size of a packet in transmission for our pc it is 65k.
+-->txqueuelen i.e max. number of packets in transmission [that deals with network device]
+-->loopback address - Each device has loopback address as 127.0.0.1 its also called as local host. If I am using this address and sending data then it would never reach its destination network because it will be pushed inside a loop in a network called interface itself as data cannot go outside network.loopback address is used for testing TCPip internal flow path. Loopback address will help the device to send and receive the packets of it own.
+
+
+07/04/2022 
+Network Programming
+
+
+socket system call supports many network communication calls ,we can say that socket system calls are designed to supported network communication protocols, because of the same reason socket system parameters are generic in nature 
+As we r using generic socket system calls all the system calls is used same socket structure as arguement and take it as struct sockaddress, it also take size as parameter this will identify the size of socket structure. Socket will have a struct that is struct sockaddress.
+
+Socket is the end point, final point or a end link in any network communication. Basically we need two sockets one ons client side and server side. Socket will take 5 socket parameters.
+--> socket(protocol,ip address of source, ip address of dest, port address of src,port address of dest)
+
+
+Network application programming is all about implementing client and server model programs. 
+http client program connecting to server programs - google chrome
+pop - email 
+
+
+Framework of client as server model 
+listen(socket address,int queuelen)
+queuelen - [tells number of client connection request]
+int accept(socket fd, struct sockaddr of client, int addrlen)
+
+Server uses 4 system call : socket(), bind(), listen(), accept().
+client system calls : connect(),
+
+connect(socket fd, struct serverdetails, int addrlen)
+
+
+ 
+SOCKET SYSTEM CALLS
+At this stage of point server is listening for client, untill server gets a client the server is said to be in while loop or wait (blocking operation).
+
+After server gets a client it has to accept the client. client system has got only two calls 1.socket 2.connect - the server should accept this and then after a connection establishes between client ans server. 
+Once the connection establishes between client and server, communication starts between client and server.
+
+#include<sys/types.h>
+#include<sys/socket.h>
+
+struct sockaddr{
+	short -> sin-family;
+	unsigned short -> sin-port;
+	struct in-addr -> sin-addr;
+}
+
+1. int socket(int family, int type, int protocol)
+--> family decides the network protocol we want to use, we use a family here afinet [address format internet protocol], we can also use raw socket instead of afinet.
+--> type tells the type of communication we are looking for is it connection orientied[TCP] or connectionless oriented [UDP].
+we can use sockdgram [conectionless].  
+In ip protocol header the protocol value is 0. On successful execution it will return a small integer like a file discriptor called as "socket file discriptor" and on failure returns -1. Socket are internally nothing but files, special files.
+ 
+2. bind(int struct sockaddress, ) - adds ip address of 
+(ip address is server itself) 
+
+
+In a network there are different types of computers which are using different CPUs and Microcontrollers. Few CPUs follow big endian format and few follow little endian format to store integer byte in memory. TCP/IP specifies all the protocol headers of a network packet to follow network byte order(big endian format). Every machine on the network should be aware of this and should convert host order to network byte order again at the receiever side while receiving incoming packets it should convert network byte order to host byte order. Source code uses the API to convert host to network order and network to host order to match respective cpu requirements. These APIs will work for both little endian and big endian machines.
+htonl(long ipaddr) : takes 32 bits long host address and converts it into 32bits long network address.
+htons(short ipaddr) : same as htonl but the address are 16bits long
+ntohs(short ipaddr) : 16bits network order to 16bits host order
+
+Difference between TCP and UDP
+
+TCP :1. Connection oriented
+	2. More reliable because it gives acknowledgement and retransmission in case of data loss.
+	3. Slower [Uses three way handshaking for connection establishment and for connection close it uses four way handshaking]
+	   Three way handshaking - client --> initiation ,connection request
+                             server --> acknowledgement
+                             client --> appreciating acceptance
+     Four way handshaking - 
+     
+  4. Extensive error checking
+	5. Streaming byte transmission
+	6. Supports data sequencing [Network packets arrive in order]
+	7. http,https,pop,ftp all supports TCP
+	8. Gurantees data delivery
+	
+UDP :1.Connectionless
+	2. Not reliable 
+	3. Faster [No handshaking]
+	4. Basic error checking
+	5. Unit/data packet transmission
+	6. No data sequence [It can be achieved but we have to manage it in the program through application.]
+	7. trivial file transfer protocol,dhcp,dns uses udp
+	8. Data delivery not guaranted 
+  
+  
