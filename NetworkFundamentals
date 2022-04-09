@@ -79,10 +79,11 @@ pop - email
 
 
 Framework of client as server model 
-listen(socket address,int queuelen)
+listen(sockfd,int queuelen)
 queuelen - [tells number of client connection request]
-int accept(socket fd, struct sockaddr of client, int addrlen)
-
+int accept(socket fd, struct sockaddr of client, int addrlen): socketfd is for server and takes addr of the same type
+--> It sis called by the TCP server shall extract the first client req in the queue and creates a new socket. Its the new socket of same socket type which is specified(addr family of the newly created socket is also of same specified type and returns a socket file discriptor).
+Case1 : implementing fork() in server to handle a client request
 Server uses 4 system call : socket(), bind(), listen(), accept().
 client system calls : connect(),
 
@@ -122,21 +123,24 @@ ntohs(short ipaddr) : 16bits network order to 16bits host order
 
 Difference between TCP and UDP
 
-TCP :1. Connection oriented
+TCP :   1. Connection oriented
 	2. More reliable because it gives acknowledgement and retransmission in case of data loss.
 	3. Slower [Uses three way handshaking for connection establishment and for connection close it uses four way handshaking]
 	   Three way handshaking - client --> initiation ,connection request
                              server --> acknowledgement
                              client --> appreciating acceptance
-     Four way handshaking - 
-     
-  4. Extensive error checking
+     Four way handshaking - client --> FIN to the server and wait for ACK and FIN from the server
+     			   serever --> Sends ACK while client is still waiting for FIN
+			   server--> Sends FIN to the client
+			   client --> Sends ACK to the server
+			   
+ 	4. Extensive error checking
 	5. Streaming byte transmission
 	6. Supports data sequencing [Network packets arrive in order]
 	7. http,https,pop,ftp all supports TCP
 	8. Gurantees data delivery
 	
-UDP :1.Connectionless
+UDP :   1.Connectionless
 	2. Not reliable 
 	3. Faster [No handshaking]
 	4. Basic error checking
@@ -146,3 +150,10 @@ UDP :1.Connectionless
 	8. Data delivery not guaranted 
   
   
+DATA TRANSFER ACD
+--> ssiz_t recvfrom(int sockfd,char *buf,int length,int flags, struct sockaddr *address[its a source from where we have to take the data], int *addrlength);
+On success it returns number of received bytes.
+instead of read we can also use recvfrom() for exa: recvfrom(sockfd,buf,10000,0,(struct sockaddr *)&cliaddr,clilen);
+--> ssiz_t sendto(int sockfd, MSG_CONNTERM, char *buf,int length, int flags, struct sockaddr *address [destination where data has to reach] ,int addrlength);
+
+--> (int MSG_CONNTERM)
