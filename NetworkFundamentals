@@ -79,16 +79,6 @@ pop - email
 
 
 Framework of client as server model 
-listen(sockfd,int queuelen)
-queuelen - [tells number of client connection request]
-int accept(socket fd, struct sockaddr of client, int addrlen): socketfd is for server and takes addr of the same type
---> It sis called by the TCP server shall extract the first client req in the queue and creates a new socket. Its the new socket of same socket type which is specified(addr family of the newly created socket is also of same specified type and returns a socket file discriptor).
-Case1 : implementing fork() in server to handle a client request
-Server uses 4 system call : socket(), bind(), listen(), accept().
-client system calls : connect(),
-
-connect(socket fd, struct serverdetails, int addrlen)
-
 
  
 SOCKET SYSTEM CALLS
@@ -115,6 +105,16 @@ In ip protocol header the protocol value is 0. On successful execution it will r
 2. bind(int struct sockaddress, ) - adds ip address of 
 (ip address is server itself) 
 
+3. listen(sockfd,int queuelen)
+queuelen - [tells number of client connection request]
+4. int accept(socket fd, struct sockaddr of client, int addrlen): socketfd is for server and takes addr of the same type
+--> It sis called by the TCP server shall extract the first client req in the queue and creates a new socket. Its the new socket of same socket type which is specified(addr family of the newly created socket is also of same specified type and returns a socket file discriptor).
+Case1 : implementing fork() in server to handle a client request
+Server uses 4 system call : socket(), bind(), listen(), accept().
+
+client system calls : connect(),
+
+1. connect(socket fd, struct serverdetails, int addrlen)
 
 In a network there are different types of computers which are using different CPUs and Microcontrollers. Few CPUs follow big endian format and few follow little endian format to store integer byte in memory. TCP/IP specifies all the protocol headers of a network packet to follow network byte order(big endian format). Every machine on the network should be aware of this and should convert host order to network byte order again at the receiever side while receiving incoming packets it should convert network byte order to host byte order. Source code uses the API to convert host to network order and network to host order to match respective cpu requirements. These APIs will work for both little endian and big endian machines.
 htonl(long ipaddr) : takes 32 bits long host address and converts it into 32bits long network address.
@@ -140,7 +140,7 @@ TCP :   1. Connection oriented
 	7. http,https,pop,ftp all supports TCP
 	8. Gurantees data delivery
 	
-UDP :   1.Connectionless
+UDP :   1. Connectionless
 	2. Not reliable 
 	3. Faster [No handshaking]
 	4. Basic error checking
@@ -157,3 +157,6 @@ instead of read we can also use recvfrom() for exa: recvfrom(sockfd,buf,10000,0,
 --> ssiz_t sendto(int sockfd, MSG_CONNTERM, char *buf,int length, int flags, struct sockaddr *address [destination where data has to reach] ,int addrlength);
 
 --> (int MSG_CONNTERM)
+--> SOCK_RAW : (Used in development stage) Raw sockets send raw packets to specific application user, user will get untampered final network packet. These packets bypass all TCP/IP processing. 
+	It can be used for optimizating and customizing the WAN network. 
+	If you want to improve the performance and security on critical traffic workloads on WAN, RAW sockets can be used.
