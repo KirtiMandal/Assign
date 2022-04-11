@@ -1,0 +1,32 @@
+Server application design : 1.Iterative Server - Serves one connection/client at a time
+2 client in the queue waits till the first client has terminated only then server 
+serves the client2. After accept system call i.e accept(), a new client socket is created 
+of same type now code enters into while loop and server receives the client data and processes 
+the data. Now the program will come out of inner while loop only when client closes the connection.
+Once client closes, server again executing the accept system call and ready for a new client.
+Iterative servers have simple interface. If each client's transaction duration is less then 
+iterative servers are good. 
+                            2.Concurrent Server - Manages/Serves multiple client at a time
+ 
+ Similarity between TCP and fifo
+ N/W Comm.(TCP) & IPC(fifo) both are connection oriented.
+ Both support string data transmission.
+ In UDP and ,msgq data transmission is by packet data transmission.
+ In UDP and msgq there is no extra security.
+ 
+ netstat : netstat is an open source tool for network statistics, it talks about how your computer is 
+ communicating with other computers or networking devices. And is also provides detailed information of individula network communication.
+ also protocol information. This information is used for trouble shooting and diagnostic purposes.
+ 
+ netstat -tulpn , here 
+                t= tcp
+                u= udp
+                l= listen
+                p= pid of the program
+                n= name of the program
+ 
+ functions to get information like cat services in etc folder.
+ A file called services in etc folder shows all the services that are used by client application
+ from your computer. A function called getservent() will read the next line of services file in etc 
+ folder and return a pointer to next entry in services file. 
+
