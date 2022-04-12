@@ -121,6 +121,7 @@ htonl(long ipaddr) : takes 32 bits long host address and converts it into 32bits
 htons(short ipaddr) : same as htonl but the address are 16bits long
 ntohs(short ipaddr) : 16bits network order to 16bits host order
 
+09/04/22
 Difference between TCP and UDP
 
 TCP :   1. Connection oriented
@@ -149,7 +150,9 @@ UDP :   1. Connectionless
 	7. trivial file transfer protocol,dhcp,dns uses udp
 	8. Data delivery not guaranted 
   
-  
+
+11/04/22
+
 DATA TRANSFER ACD
 --> ssiz_t recvfrom(int sockfd,char *buf,int length,int flags, struct sockaddr *address[its a source from where we have to take the data], int *addrlength);
 On success it returns number of received bytes.
@@ -157,6 +160,35 @@ instead of read we can also use recvfrom() for exa: recvfrom(sockfd,buf,10000,0,
 --> ssiz_t sendto(int sockfd, MSG_CONNTERM, char *buf,int length, int flags, struct sockaddr *address [destination where data has to reach] ,int addrlength);
 
 --> (int MSG_CONNTERM)
---> SOCK_RAW : (Used in development stage) Raw sockets send raw packets to specific application user, user will get untampered final network packet. These packets bypass all TCP/IP processing. 
+--> SOCK_RAW : (Used in development stage) Raw sockets send raw packets to specific application user, user will get untampered final network packet.
+These packets bypass all TCP/IP processing. 
 	It can be used for optimizating and customizing the WAN network. 
 	If you want to improve the performance and security on critical traffic workloads on WAN, RAW sockets can be used.
+
+12/04/22
+Raw socket is used for testing 
+struct belongs to datalink layer struct and it will have the family ,protocol(ETH_ALL), physical packet type, header type,
+physical address, and address length.
+Size of TCP header is 20-60bytes.
+
+pf packet family use to create packet socket.
+Data transmission is from the physical link layer that is below the internet protocol layer.
+2nd arguement of socket, the type can be SOCK_RAW or SOCK_DGRAM,When we use sock_raw-the packet including link layer header is passed to the user
+when we use pipe as sock_dgram ,packet without link layer header is passed to the specific user.
+Protocol value is defined by ieee people. A std ethernet protocol for all means all packets are received and the value is .....
+
+setsockopt(int sockfd,int level, int optionName, *optionValue, size_t sizeof(optionValue))
+Used by application program to change the socket behaviour. We can set any option of the socket.
+We can make 3 types of request --> We can make request from socket level, request from
+transport layer, request from network layer.
+Reuseport - forces by the kernel to use the same port. If its 1- setting my value and 0-default.
+
+Making use of multiple threads - implementing terminal emulator programs, while reading from multiple 
+input sources if we configure a process to read from keyboard when no data from the keyboard then the process will 
+block even if it has data on serial port ,the process wont be able to use it and hence we use multiple
+threads to read from multiple input sources.
+We will use file discriptors using select() system calls.
+
+select systemcall makes the programmer to read from multiple file discriptors when file discriptors are 
+ready for i/o operations 
+-->int  select(int NoOfFd,fdset *readfds ,struct *writefds, struct error,struct timeValue)
