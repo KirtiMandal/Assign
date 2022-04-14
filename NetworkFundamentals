@@ -219,6 +219,26 @@ data and all the data is available offline and then if we want to save it we can
 
 ip meta data - ip packets carry ip header[20-24bytes]+ the data.
 
+promiscuous mode - device captures packet from other devices on the same network as well
+i.e capturing the traffic.
+Your network card by default is listening and monitoring the packets coming to your mac address.
+Once the promiscuous mode is started it allows your network to listen and 
+monitor packets of other networking devices.
+
+filters - capture filters are used for filtering during a live session.
+Here we can capture a packet of different types.
+If we want to filters w.r.t to protocol or port no. we need to inform 
+the wireshark. Even using ip address we can filter. 
+Either in source or in destination we can see the ip address.
+ip.src for source ip Ex: ip.src==192.168.233.172
+ip.dst for destination path  Ex: ip.dst==192.168.233.172
+If we want to capture interface, 1st we will need to stop capturing the data packets.
+
+
+ 
+
+tcp.port = port no.
+
 
 
 
