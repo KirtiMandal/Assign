@@ -191,4 +191,43 @@ We will use file discriptors using select() system calls.
 
 select systemcall makes the programmer to read from multiple file discriptors when file discriptors are 
 ready for i/o operations 
--->int  select(int NoOfFd,fdset *readfds ,struct *writefds, struct error,struct timeValue)
+-->int  select(int NoOfFd,fdset *readfds ,fdset *writefds, struct error,struct timeValue)
+ndfs - It tells the select system call the number of file discriptors to be checked
+readfds (1st fdset) - Its for testing the readiness of file discriptors for read operation.
+writefds - 2nd ptr of type fdset is for testing readiness of file discriptors for write operations.
+If any of file discriptor is having error pending will  be verified by this ptr.
+timeout- Its a variable or object of type struct timeVal. This timeout will make the select system call 
+until a fd is ready for i/o operation  or time expires.
+Returns = error case -0 or the no. of file discriptors set by readfdset, writefdset and errorfdset
+
+
+FD_ISSET - checks whether a particular file discriptor has been set or not.
+select() can wait on (max no. of files<fdsetsize) ,const fdsetsize is 1024.
+
+NETWORK TOOLS
+wireshark - Its an open source software tool that captures incoming and outgoing network data packets in real time .
+And the captured information is used for network trouble shooting and diagnosing,packet analysis, software development and communication 
+protocol development.
+With wireshark we can see the things around the network and we can get the detailed packet moment information.
+Wireshark supports 100s of packets of different protocols the only logic applied is capturing the packets online 
+and examining them offline.
+It can read and write different captured file formats.
+
+in view after starting the session - main, filter and status are preselected.
+in the session the red button is for ending the session. When we end the session we stop capturing the network 
+data and all the data is available offline and then if we want to save it we can save it too.
+
+ip meta data - ip packets carry ip header[20-24bytes]+ the data.
+
+
+
+
+
+
+
+
+
+
+
+
+
